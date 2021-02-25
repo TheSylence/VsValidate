@@ -65,6 +65,64 @@ namespace VsValidate.Tests.VisualStudio
 		}
 
 		[Fact]
+		public void PackageReferenceShouldBeReadWhenStoredInMultipleGroups()
+		{
+			// Arrange			
+			var xml = new XDocument(new XElement("Project",
+				new XElement("ItemGroup",
+					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
+						new XAttribute("Version", "1.2.3.4-pre5"))),
+				new XElement("ItemGroup",
+					new XElement("PackageReference", new XAttribute("Include", "Package.Two"),
+						new XAttribute("Version", "0.1")))));
+
+			// Act
+			var sut = new Project(xml);
+
+			// Assert
+			Assert.Contains(sut.PackageReferences, x => x.Name == "Package.Name" && x.Version == "1.2.3.4-pre5");
+			Assert.Contains(sut.PackageReferences, x => x.Name == "Package.Two" && x.Version == "0.1");
+		}
+
+		[Fact]
+		public void PackageReferenceShouldContainConditionOfItemGroup()
+		{
+			// Arrange
+			var xml = new XDocument(new XElement("Project",
+				new XElement("ItemGroup",
+					new XAttribute("Condition", "condition-value"),
+					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
+						new XAttribute("Version", "1.2.3.4-pre5")))));
+
+			// Act
+			var sut = new Project(xml);
+
+			// Assert
+			var package = Assert.Single(sut.PackageReferences);
+			Assert.NotNull(package!.Condition);
+			Assert.Equal("condition-value", package.Condition!.Expression);
+		}
+
+		[Fact]
+		public void PackageReferencesShouldBeReadWhenStoredInSingleGroup()
+		{
+			// Arrange
+			var xml = new XDocument(new XElement("Project",
+				new XElement("ItemGroup",
+					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
+						new XAttribute("Version", "1.2.3.4-pre5")))));
+
+			// Act
+			var sut = new Project(xml);
+
+			// Assert
+			var package = Assert.Single(sut.PackageReferences);
+			Assert.Equal("Package.Name", package!.Name);
+			Assert.Equal("1.2.3.4-pre5", package.Version);
+			Assert.Null(package.Condition);
+		}
+
+		[Fact]
 		public void PropertyValueShouldBeNullForEmptyProject()
 		{
 			// Arrange
@@ -102,6 +160,21 @@ namespace VsValidate.Tests.VisualStudio
 
 			// Assert
 			Assert.Equal("value", actual);
+		}
+
+		[Fact]
+		public void SdkShouldBeRead()
+		{
+			// Arrange
+			var xml = new XDocument(new XElement("Project",
+				new XAttribute("Sdk", "Sdk.Name"),
+				new XElement("PropertyGroup", new XElement("ExistingProperty", "value"))));
+
+			// Act
+			var sut = new Project(xml);
+
+			// Assert
+			Assert.Equal("Sdk.Name", sut.Sdk);
 		}
 	}
 }
