@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using VsValidate.Utilities;
+using VsValidate.VisualStudio;
 
-namespace VsValidate
+namespace VsValidate.Validation
 {
 	internal class Validator
 	{

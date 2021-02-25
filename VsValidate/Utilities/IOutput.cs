@@ -1,4 +1,4 @@
-﻿namespace VsValidate
+﻿namespace VsValidate.Utilities
 {
 	internal interface IOutput
 	{

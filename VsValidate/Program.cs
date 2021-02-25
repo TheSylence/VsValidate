@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using VsValidate.Utilities;
+using VsValidate.Validation;
+using VsValidate.VisualStudio;
 
 [assembly: InternalsVisibleTo("VsValidate.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

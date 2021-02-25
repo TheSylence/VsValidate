@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
+using VsValidate.Utilities;
+using VsValidate.VisualStudio;
 using Xunit;
 
-namespace VsValidate.Tests
+namespace VsValidate.Tests.VisualStudio
 {
 	public class ProjectLoaderTests
 	{

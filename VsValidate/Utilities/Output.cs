@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.IO;
 
-namespace VsValidate
+namespace VsValidate.Utilities
 {
 	internal class Output : IOutput
 	{

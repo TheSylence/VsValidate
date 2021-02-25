@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VsValidate.Utilities;
 
-namespace VsValidate
+namespace VsValidate.Validation
 {
 	internal class RulesLoader
 	{

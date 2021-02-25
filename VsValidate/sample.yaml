@@ -1,0 +1,29 @@
+inputs:
+  - exclude:
+    - "!**/test/*"
+    - "abc"
+
+rules:
+  - property:
+        name: LangVersion
+        optional: true
+        value: '7.3'
+
+  - property:
+        name: TargetFramework
+        optional: false
+        value: 'net5.0'
+
+  - property:
+        name: TreatWarningsAsError
+        optional: false
+        value: "true"
+
+  - property:
+        name: OutputPath
+        forbidden: true
+
+  - package:
+        name: NewtonSoft.Json
+        required: true
+        version: '^12.0.3'

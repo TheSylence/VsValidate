@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
+using VsValidate.Utilities;
+using VsValidate.Validation;
 using VsValidate.VisualStudio;
 using Xunit;
 
-namespace VsValidate.Tests
+namespace VsValidate.Tests.Validation
 {
 	public class ValidatorTests
 	{

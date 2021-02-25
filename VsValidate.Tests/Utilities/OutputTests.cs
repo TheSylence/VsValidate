@@ -1,9 +1,10 @@
 using System.CommandLine;
 using System.CommandLine.IO;
 using NSubstitute;
+using VsValidate.Utilities;
 using Xunit;
 
-namespace VsValidate.Tests
+namespace VsValidate.Tests.Utilities
 {
 	public class OutputTests
 	{

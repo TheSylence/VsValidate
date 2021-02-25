@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using VsValidate.VisualStudio;
 
-namespace VsValidate
+namespace VsValidate.Validation
 {
 	internal interface IRule
 	{

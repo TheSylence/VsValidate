@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using VsValidate.VisualStudio;
 
-namespace VsValidate
+namespace VsValidate.VisualStudio
 {
 	internal interface IProjectLoader
 	{

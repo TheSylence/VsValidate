@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using VsValidate.VisualStudio;
+using VsValidate.Utilities;
 
-namespace VsValidate
+namespace VsValidate.VisualStudio
 {
 	internal class ProjectLoader : IProjectLoader
 	{
