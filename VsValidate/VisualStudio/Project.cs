@@ -21,6 +21,11 @@ namespace VsValidate.VisualStudio
 		public ICollection<IPropertyGroup> PropertyGroups { get; }
 		public string Sdk { get; }
 
+		public IEnumerable<IProperty> FindPropertyByName(string name)
+		{
+			return PropertyGroups.SelectMany(g => g.Properties).Where(p => p.Name == name);
+		}
+
 		public string? PropertyValue(string propertyName)
 		{
 			foreach (var group in PropertyGroups)

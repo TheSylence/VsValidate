@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "VsValidate": {
+      "commandName": "Project",
+      "commandLineArgs": "--config config.yml --project ../../../VsValidate.csproj",
+      "workingDirectory": "bin\\Debug\\net5.0\\"
+    }
+  }
+}

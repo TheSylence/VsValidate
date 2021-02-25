@@ -25,7 +25,7 @@ namespace VsValidate
 				{
 					IsRequired = true,
 					AllowMultipleArgumentsPerToken = false,
-					Argument = new Argument
+					Argument = new Argument<FileInfo>
 					{
 						Arity = ArgumentArity.ExactlyOne
 					}
@@ -35,7 +35,7 @@ namespace VsValidate
 				{
 					IsRequired = true,
 					AllowMultipleArgumentsPerToken = true,
-					Argument = new Argument
+					Argument = new Argument<FileInfo[]>
 					{
 						Arity = ArgumentArity.OneOrMore
 					}
@@ -46,17 +46,18 @@ namespace VsValidate
 
 			rootCommand.Description = "Validator for Visual Studio projects";
 			rootCommand.Handler = CommandHandler.Create(
-				(FileInfo config, FileInfo[] project, bool verbose, bool silent, IConsole console) =>
+				async (FileInfo config, FileInfo[] project, bool verbose, bool silent, IConsole console) =>
 				{
 					var logger = new Output(console, silent, verbose);
 
-					var rulesLoader = new RulesLoader(logger);
-					var rules = rulesLoader.LoadRules(config).ToList();
+					var rulesFactory = new RulesFactory();
+					var rulesLoader = new RulesLoader(rulesFactory, logger);
+					var rules = await rulesLoader.LoadRules(config).ToListAsync();
 
 					var projectLoader = new ProjectLoader(logger);
 					var validator = new Validator(rules, projectLoader, logger);
 
-					return validator.Validate(project);
+					return await validator.Validate(project);
 				});
 
 			return rootCommand.InvokeAsync(args);

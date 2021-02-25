@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VsValidate.Utilities;
+using VsValidate.Validation.Rules;
 using VsValidate.VisualStudio;
 
 namespace VsValidate.Validation

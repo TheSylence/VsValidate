@@ -9,6 +9,8 @@ namespace VsValidate.VisualStudio
 
 		string Sdk { get; }
 
+		IEnumerable<IProperty> FindPropertyByName(string name);
+
 		/// <summary>
 		///    Returns the value of the first found property with the given name.
 		///    Subsequent occurrences of a property with the same name are ignored.
