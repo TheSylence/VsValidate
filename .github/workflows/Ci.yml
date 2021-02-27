@@ -25,4 +25,5 @@ jobs:
         run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Check code coverage
+        shell: pwsh
         run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder VsValidate.Tests/TestResults
