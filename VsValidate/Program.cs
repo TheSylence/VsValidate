@@ -50,7 +50,7 @@ namespace VsValidate
 				{
 					var logger = new Output(console, silent, verbose);
 
-					var rulesFactory = new RulesFactory();
+					var rulesFactory = new RuleFactory();
 					var rulesLoader = new RulesLoader(rulesFactory, logger);
 					var rules = await rulesLoader.LoadRules(config).ToListAsync();
 

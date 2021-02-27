@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
@@ -17,23 +16,6 @@ namespace VsValidate.Tests.VisualStudio
 			File.WriteAllText(fileName, content);
 
 			return new DisposableFileInfo(fileName);
-		}
-
-		private class DisposableFileInfo : IDisposable
-		{
-			public DisposableFileInfo(string fileName)
-			{
-				_fileInfo = new FileInfo(fileName);
-			}
-
-			public void Dispose()
-			{
-				File.Delete(_fileInfo.FullName);
-			}
-
-			public static implicit operator FileInfo(DisposableFileInfo x) => x._fileInfo;
-
-			private readonly FileInfo _fileInfo;
 		}
 
 		[Fact]

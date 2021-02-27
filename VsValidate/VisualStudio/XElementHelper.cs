@@ -7,10 +7,7 @@ namespace VsValidate.VisualStudio
 		public static ICondition? ReadCondition(XElement element)
 		{
 			var attr = element.Attribute("Condition");
-			if (attr != null)
-				return new Condition(attr.Value);
-
-			return null;
+			return attr != null ? new Condition(attr.Value) : null;
 		}
 	}
 }

@@ -7,22 +7,16 @@ namespace VsValidate.Tests.VisualStudio
 {
 	public class ProjectTests
 	{
-		private static Project ConstructSimpleProject()
-		{
-			var xml = new XDocument(new XElement("Project",
-				new XElement("PropertyGroup", new XElement("ExistingProperty", "value"))));
-			return new Project(xml);
-		}
-
 		[Fact]
 		public void AllPropertyGroupsShouldBeRead()
 		{
 			// Arrange
-			var xml = new XDocument(new XElement("Project",
-				new XElement("PropertyGroup",
-					new XElement("Property1", "1")),
-				new XElement("PropertyGroup",
-					new XElement("Property2", "2"))));
+			var xml = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("Property1", "1")
+				.WithPropertyGroup()
+				.WithProperty("Property2", "2")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);
@@ -38,9 +32,10 @@ namespace VsValidate.Tests.VisualStudio
 		public void ConditionOfPropertyGroupShouldContainExpressionWhenItExists()
 		{
 			// Arrange
-			var xml = new XDocument(new XElement("Project",
-				new XElement("PropertyGroup", new XAttribute("Condition", "condition-value"),
-					new XElement("ExistingProperty", "value"))));
+			var xml = new ProjectBuilder()
+				.WithPropertyGroup("condition-value")
+				.WithProperty("ExistingProperty", "value")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);
@@ -52,10 +47,54 @@ namespace VsValidate.Tests.VisualStudio
 		}
 
 		[Fact]
+		public void FindPropertyByNameShouldNotFindNonMatchingProperties()
+		{
+			// Arrange
+			var xml = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("Property", "1")
+				.WithPropertyGroup()
+				.WithProperty("Property2", "2")
+				.WithPropertyGroup()
+				.WithProperty("Property", "2")
+				.BuildXml();
+
+			var sut = new Project(xml);
+
+			// Act
+			var actual = sut.FindPropertyByName("Property");
+
+			// Assert
+			Assert.Equal(2, actual.Count());
+		}
+
+		[Fact]
+		public void FindPropertyByNameShouldReturnAllFoundProperties()
+		{
+			// Arrange
+			var xml = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("Property", "1")
+				.WithPropertyGroup()
+				.WithProperty("Property", "2")
+				.BuildXml();
+
+			var sut = new Project(xml);
+
+			// Act
+			var actual = sut.FindPropertyByName("Property");
+
+			// Assert
+			Assert.Equal(2, actual.Count());
+		}
+
+		[Fact]
 		public void GroupOfPropertyShouldHaveCorrectReference()
 		{
 			// Arrange
-			var sut = ConstructSimpleProject();
+			var sut = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("ExistingProperty", "value").Build();
 
 			// Act
 			var actual = sut.PropertyGroups.Single().Properties.Single();
@@ -68,13 +107,12 @@ namespace VsValidate.Tests.VisualStudio
 		public void PackageReferenceShouldBeReadWhenStoredInMultipleGroups()
 		{
 			// Arrange			
-			var xml = new XDocument(new XElement("Project",
-				new XElement("ItemGroup",
-					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
-						new XAttribute("Version", "1.2.3.4-pre5"))),
-				new XElement("ItemGroup",
-					new XElement("PackageReference", new XAttribute("Include", "Package.Two"),
-						new XAttribute("Version", "0.1")))));
+			var xml = new ProjectBuilder()
+				.WithItemGroup()
+				.WithPackageReference("Package.Name", "1.2.3.4-pre5")
+				.WithItemGroup()
+				.WithPackageReference("Package.Two", "0.1")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);
@@ -88,11 +126,10 @@ namespace VsValidate.Tests.VisualStudio
 		public void PackageReferenceShouldContainConditionOfItemGroup()
 		{
 			// Arrange
-			var xml = new XDocument(new XElement("Project",
-				new XElement("ItemGroup",
-					new XAttribute("Condition", "condition-value"),
-					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
-						new XAttribute("Version", "1.2.3.4-pre5")))));
+			var xml = new ProjectBuilder()
+				.WithItemGroup("condition-value")
+				.WithPackageReference("Package.Name", "1.2.3.4-pre5")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);
@@ -107,10 +144,10 @@ namespace VsValidate.Tests.VisualStudio
 		public void PackageReferencesShouldBeReadWhenStoredInSingleGroup()
 		{
 			// Arrange
-			var xml = new XDocument(new XElement("Project",
-				new XElement("ItemGroup",
-					new XElement("PackageReference", new XAttribute("Include", "Package.Name"),
-						new XAttribute("Version", "1.2.3.4-pre5")))));
+			var xml = new ProjectBuilder()
+				.WithItemGroup()
+				.WithPackageReference("Package.Name", "1.2.3.4-pre5")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);
@@ -140,7 +177,9 @@ namespace VsValidate.Tests.VisualStudio
 		public void PropertyValueShouldBeNullWhenNotFound()
 		{
 			// Arrange
-			var sut = ConstructSimpleProject();
+			var sut = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("ExistingProperty", "value").Build();
 
 			// Act
 			var actual = sut.PropertyValue("NonExistingProperty");
@@ -153,7 +192,9 @@ namespace VsValidate.Tests.VisualStudio
 		public void PropertyValueShouldHaveCorrectValueWhenFound()
 		{
 			// Arrange
-			var sut = ConstructSimpleProject();
+			var sut = new ProjectBuilder()
+				.WithPropertyGroup()
+				.WithProperty("ExistingProperty", "value").Build();
 
 			// Act
 			var actual = sut.PropertyValue("ExistingProperty");
@@ -166,9 +207,8 @@ namespace VsValidate.Tests.VisualStudio
 		public void SdkShouldBeRead()
 		{
 			// Arrange
-			var xml = new XDocument(new XElement("Project",
-				new XAttribute("Sdk", "Sdk.Name"),
-				new XElement("PropertyGroup", new XElement("ExistingProperty", "value"))));
+			var xml = new ProjectBuilder("Sdk.Name")
+				.BuildXml();
 
 			// Act
 			var sut = new Project(xml);

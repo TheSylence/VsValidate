@@ -10,13 +10,9 @@ namespace VsValidate.Validation
 {
 	internal class RulesLoader
 	{
-		private readonly IRulesFactory _rulesFactory;
-		private readonly IOutput _output;
-		private readonly IDeserializer _deserializer;
-
-		public RulesLoader(IRulesFactory rulesFactory, IOutput output)
+		public RulesLoader(IRuleFactory ruleFactory, IOutput output)
 		{
-			_rulesFactory = rulesFactory;
+			_ruleFactory = ruleFactory;
 			_output = output;
 			_deserializer = new DeserializerBuilder()
 				.WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -27,11 +23,11 @@ namespace VsValidate.Validation
 		{
 			_output.Verbose($"Loading configuration from {configFile}");
 
-			RulesList rulesList;
+			RulesList? rulesList;
 			try
 			{
 				var yml = await File.ReadAllTextAsync(configFile.FullName);
-				rulesList = _deserializer.Deserialize<RulesList>(yml);
+				rulesList = _deserializer.Deserialize<RulesList?>(yml);
 			}
 			catch (Exception ex)
 			{
@@ -40,11 +36,18 @@ namespace VsValidate.Validation
 				yield break;
 			}
 
+			if (rulesList == null)
+				yield break;
+
 			if (rulesList.Packages != null)
 			{
 				foreach (var data in rulesList.Packages)
 				{
-					yield return _rulesFactory.Construct(data);
+					var rule = _ruleFactory.Construct(data);
+					if (rule != null)
+						yield return rule;
+					else
+						_output.Warning("Malformed package rule. Ignoring.");
 				}
 			}
 
@@ -52,9 +55,17 @@ namespace VsValidate.Validation
 			{
 				foreach (var data in rulesList.Properties)
 				{
-					yield return _rulesFactory.Construct(data);
+					var rule = _ruleFactory.Construct(data);
+					if (rule != null)
+						yield return rule;
+					else
+						_output.Warning("Malformed property rule. Ignoring.");
 				}
 			}
 		}
+
+		private readonly IRuleFactory _ruleFactory;
+		private readonly IOutput _output;
+		private readonly IDeserializer _deserializer;
 	}
 }

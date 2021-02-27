@@ -34,12 +34,15 @@ namespace VsValidate.Validation.Rules
 			if (properties.Any() && _data.Forbidden)
 				return ValidationResult.Error($"Forbidden property {_data.Name} specified");
 
-			foreach (var property in properties)
+			if (_data.Value != null)
 			{
-				if (_data.Value != property.Value)
+				foreach (var property in properties)
 				{
-					return ValidationResult.Error(
-						$"Property {_data.Name} has invalid value ({property.Value} instead of {_data.Value})");
+					if (_data.Value != property.Value)
+					{
+						return ValidationResult.Error(
+							$"Property {_data.Name} has invalid value ({property.Value} instead of {_data.Value})");
+					}
 				}
 			}
 

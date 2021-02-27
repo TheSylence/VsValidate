@@ -17,7 +17,7 @@ namespace VsValidate.Validation
 			_rules = rules.ToList();
 		}
 
-		public async Task<int> Validate(FileInfo[] projectFiles)
+		public async Task<int> Validate(IEnumerable<FileInfo> projectFiles)
 		{
 			var results = new List<FileValidationResult>();
 

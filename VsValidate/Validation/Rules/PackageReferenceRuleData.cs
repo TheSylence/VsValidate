@@ -1,10 +1,13 @@
-﻿namespace VsValidate.Validation.Rules
+﻿using JetBrains.Annotations;
+
+namespace VsValidate.Validation.Rules
 {
+	[UsedImplicitly]
 	internal class PackageReferenceRuleData
 	{
-		public string Name { get; set; }
-		public string? Version { get; set; }
-		public bool Required { get; set; }
-		public bool Forbidden { get; set; }
+		[UsedImplicitly] public bool Forbidden { get; set; }
+		[UsedImplicitly] public string Name { get; set; } = string.Empty;
+		[UsedImplicitly] public bool Required { get; set; }
+		[UsedImplicitly] public string? Version { get; set; }
 	}
 }
