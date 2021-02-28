@@ -3,6 +3,7 @@ param(
     [String] $baseFolder
 )
 
+$ErrorActionPreference = 'continue'
 $failedTests = $false
 
 $failingFolder = "$($baseFolder)/Failing"
