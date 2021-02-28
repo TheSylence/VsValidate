@@ -25,10 +25,10 @@ jobs:
           tagRegex: "[v]?(?<prefix>[^-\\s]+)[-]?(?<suffix>.*)"
 
       - name: Publish Windows executable
-        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r win-x64 -o Publish/win-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }} /p:PublishSingleFile=true
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r win-x64 -o Publish/win-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }} /p:PublishSingleFile=true  /p:AssemblyName=vsvalidate
 
       - name: Publish Linux executable
-        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r linux-x64 -o Publish/linux-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }} /p:PublishSingleFile=true /p:AssemblyName=vsvalidate-x64
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r linux-x64 -o Publish/linux-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }} /p:PublishSingleFile=true /p:AssemblyName=vsvalidate
 
       - name: Publish Linux executable for ARM
         run: dotnet publish VsValidate/VsValidate.csproj -c Release -r linux-arm64 -o Publish/linux-arm64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }} /p:PublishSingleFile=true /p:AssemblyName=vsvalidate-arm64
