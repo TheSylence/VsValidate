@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: dotnet build VsValidate.sln --configuration Release
 
-      - name: Tests
+      - name: Run Unit Tests
         run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Check code coverage
