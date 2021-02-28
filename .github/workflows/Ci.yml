@@ -31,12 +31,6 @@ jobs:
       - name: Check code coverage
         run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder VsValidate.Tests/TestResults
 
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: coverage.cobertura.xml
-
       - name: Run integration Tests
         run: .github/workflows/run-integration-tests.ps1 -baseFolder TestCases -exe VsValidate/bin/Release/net5.0/VsValidate.dll
 
