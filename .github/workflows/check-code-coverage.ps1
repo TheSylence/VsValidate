@@ -13,7 +13,4 @@ Get-ChildItem $resultFolder -Filter *.xml -Recurse | ForEach-Object {
     if ( $lines -lt $threshold || $branches -lt $threshold ) {
         Write-Error "Code coverage too low. Lines: $($lines)%, branches: $($branches)%, threshold: $($threshold)%"
     }
-    else {
-        Move-Item -Path $_ -Destination "$($resultFolder)/.."
-    }
 }
