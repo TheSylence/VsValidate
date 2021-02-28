@@ -26,16 +26,22 @@ jobs:
         run: dotnet build VsValidate.sln --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage" -r CoverageResults
+        run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Check code coverage
-        run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder CoverageResults
+        run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder VsValidate.Tests/TestResults
 
       - name: Run integration Tests
         run: .github/workflows/run-integration-tests.ps1 -baseFolder TestCases -exe VsValidate/bin/Release/net5.0/VsValidate.dll
 
-      - name: Upload code coverage
-        uses: codacy/codacy-coverage-reporter-action@master
+      - name: Setup Java for CodeCoverage results
+        uses: actions/setup-java@v1
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: CoverageResults/coverage.cobertura.xml
+          java-version: 1.8
+
+      - name: Download Coverage reporter
+        run: Invoke-WebRequest -Uri 'https://github.com/codacy/codacy-coverage-reporter/releases/download/11.2.2/codacy-coverage-reporter-assembly-11.2.2.jar' -UseBasicParsing -OutFile  ./codacy-test-reporter.jar
+
+      - name: Upload code coverage
+        run: .github/workflows/upload-code-coverage.ps1 -token ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: github.head_ref == 0
