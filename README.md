@@ -7,6 +7,13 @@
 
 Validator for Visual Studio projects to make sure all projects in a solution are configured properly.
 
+## Requirements
+.NET Core 5.0 Runtime must be installed on the machine.
+If you build your app using `dotnet` you probably have installed the .NET Core SDK which includes the runtime.
+The runtime doesn't have to installed separately in this case.
+
+The app should work on Windows x64, Linux x64 and Linux Arm64.
+
 ## Usage
 Call the program with your configuration file and specify which projects (or solutions) to validate.
 
