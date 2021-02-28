@@ -26,7 +26,7 @@ jobs:
         run: dotnet build VsValidate.sln --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test VsValidate.sln --configuration Release --collect:"XPlat Code Coverage" -p:DebugType=full
 
       - name: Check code coverage
         run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder VsValidate.Tests/TestResults
