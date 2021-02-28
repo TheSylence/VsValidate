@@ -28,10 +28,10 @@ jobs:
         run: dotnet publish VsValidate/VsValidate.csproj -c Release -r win-x64 -o Publish/win-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
 
       - name: Publish Linux executable
-        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r liunx-x64 -o Publish/linux-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r linux-x64 -o Publish/linux-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
 
       - name: Publish Linux executable for ARM
-        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r liunx-arm64 -o Publish/linux-arm64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r linux-arm64 -o Publish/linux-arm64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
 
       - name: Create github release
         uses: ncipollo/release-action@v1
