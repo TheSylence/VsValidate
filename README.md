@@ -38,5 +38,23 @@ You can of course combine both package and property checks in a single configura
 ## Rules
 
 ### Property
-Enables checks for properties in all projects. Listed under `properties` in your configuration file.
+Checks that a property is correctly configured in all projects. Listed under `properties` in your configuration file.
 
+| Field | Description | Required? | Default value |
+|---|---|---|---|
+| `name` | Name of the property. Case sensitive. | Yes | |
+| `forbidden` | Fail validation if property exists. | No | `false` |
+| `optional` | Don't fail validation when property is not found. | No | `false` |
+| `maximumOccurrences` | Fail validation if property is found more than `n` times in a project. | No | Don't check number of occurrences |
+| `minimumOccurrences` | Fail validation if property is found less than `n` times in a project. | No | Don't check number of occurrences |
+| `value` | Fail validation if property does not have this value. Case sensitive | No | Don't check value |
+
+### Package
+Checks that a package is correctly referenced in all projects. Listed under `packages` in your configuration file.
+
+| Field | Description | Required? | Default value |
+|---|---|---|---|
+| `name` | Name of the referenced package. Case sensitive | Yes | |
+| `required` | Fails validation if package is not referenced | No | `false` |
+| `forbidden` | Fails validation if package is referenced | No | `false` |
+| `version` | Fails validation if installed version of the package does not fall in this range. (See [https://github.com/npm/node-semver#versions](https://github.com/npm/node-semver#versions) for a reference for version ranges) | No | Don't check version | 
