@@ -32,5 +32,5 @@ if ( $failedTests ) {
     Write-Error "One or more tests have failed"
     Exit 1
 }
-Write-Host "All test cases successfully run"
+Write-Output "All test cases successfully run"
 Exit 0

@@ -21,10 +21,11 @@ namespace VsValidate.Tests
 					var forbidden = property.Forbidden ? "true" : "false";
 
 					sb.AppendLine($"  - name: {property.Name}");
-					if (!string.IsNullOrEmpty(property.Value))
-						sb.AppendLine($"    value: {property.Value}");
 					sb.AppendLine($"    optional: {optional}");
 					sb.AppendLine($"    forbidden: {forbidden}");
+					if (!string.IsNullOrEmpty(property.Value))
+						sb.AppendLine($"    value: {property.Value}");
+
 					sb.AppendLine();
 				}
 			}
@@ -39,10 +40,12 @@ namespace VsValidate.Tests
 					var required = package.Required ? "true" : "false";
 
 					sb.AppendLine($"  - name: {package.Name}");
-					if (!string.IsNullOrEmpty(package.Version))
-						sb.AppendLine($"    version: {package.Version}");
+
 					sb.AppendLine($"    required: {required}");
 					sb.AppendLine($"    forbidden: {forbidden}");
+					if (!string.IsNullOrEmpty(package.Version))
+						sb.AppendLine($"    version: {package.Version}");
+
 					sb.AppendLine();
 				}
 			}

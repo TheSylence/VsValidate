@@ -4,7 +4,7 @@ param(
 )
 
 Get-ChildItem $resultFolder -Filter *.xml -Recurse | ForEach-Object {
-    Write-Host "Checking code coverage results in '$($_)' with a threshold of $($threshold)"
+    Write-Output "Checking code coverage results in '$($_)' with a threshold of $($threshold)"
     $xml = [xml](Get-Content -Path $_)
     
     $lines = [double]::Parse( (Select-Xml -Xml $xml -XPath "//coverage/@line-rate"), [cultureinfo] 'en-US' ) * 100

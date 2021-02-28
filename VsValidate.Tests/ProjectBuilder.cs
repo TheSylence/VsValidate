@@ -66,7 +66,7 @@ namespace VsValidate.Tests
 		public ProjectBuilder WithPackageReference(string name, string version)
 		{
 			if (_currentItemGroup == null)
-				throw new Exception();
+				throw new InvalidOperationException("No ItemGroup created");
 
 			var reference = new PackageReference(name, version);
 			_currentItemGroup.PackageReferences.Add(reference);
@@ -76,7 +76,7 @@ namespace VsValidate.Tests
 		public ProjectBuilder WithProperty(string name, string value)
 		{
 			if (_currentPropertyGroup == null)
-				throw new Exception();
+				throw new InvalidOperationException("No PropertyGroup created");
 
 			var prop = new Property(name, value);
 			_currentPropertyGroup.Properties.Add(prop);

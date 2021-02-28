@@ -50,11 +50,11 @@ namespace VsValidate.Tests.Validation
 
 			var sut = new Validator(rules, projectLoader, output);
 
-			var projectFiles = new FileInfo[]
+			var projectFiles = new[]
 			{
-				new("project1"),
-				new("project2"),
-				new("project3")
+				new FileInfo("project1"),
+				new FileInfo("project2"),
+				new FileInfo("project3")
 			};
 
 			// Act
