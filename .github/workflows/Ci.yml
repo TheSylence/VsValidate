@@ -27,3 +27,7 @@ jobs:
       - name: Check code coverage
         shell: pwsh
         run: .github/workflows/check-code-coverage.ps1 -threshold 100 -resultFolder VsValidate.Tests/TestResults
+
+      - name: Run integration Tests
+        shell: pwsh
+        run: .github/workflows/run-integration-tests.ps1 -baseFolder TestCases -exe VsValidate/bin/Release/net5.0/VsValidate.exe
