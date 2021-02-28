@@ -25,7 +25,7 @@ namespace VsValidate.Tests.VisualStudio
 			var logger = Substitute.For<IOutput>();
 			var sut = new ProjectLoader(logger);
 
-			var solutionFile = new FileInfo("_TestData/TestSolutions/Solution.txt");
+			var solutionFile = new FileInfo("TestData/Solution.txt");
 
 			// Act
 			var actual = await sut.LoadProjectsFrom(solutionFile).ToListAsync();
@@ -41,7 +41,7 @@ namespace VsValidate.Tests.VisualStudio
 			var logger = Substitute.For<IOutput>();
 			var sut = new ProjectLoader(logger);
 
-			var solutionFile = new FileInfo("_TestData/TestSolutions/NonExistingProjectSolution.txt");
+			var solutionFile = new FileInfo("TestData/NonExistingProjectSolution.txt");
 
 			// Act
 			var actual = await sut.LoadProjectsFrom(solutionFile).ToListAsync();
@@ -73,7 +73,7 @@ namespace VsValidate.Tests.VisualStudio
 			var logger = Substitute.For<IOutput>();
 			var sut = new ProjectLoader(logger);
 
-			var solutionFile = new FileInfo("_TestData/TestSolutions/EmptySolution.txt");
+			var solutionFile = new FileInfo("TestData/EmptySolution.txt");
 
 			// Act
 			var actual = await sut.LoadProjectsFrom(solutionFile).ToListAsync();

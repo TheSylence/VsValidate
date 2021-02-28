@@ -27,21 +27,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="_TestData\TestSolutions\Solution.txt">
+		<None Update="TestData\Solution.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="_TestData\TestSolutions\NonExistingProjectSolution.txt">
+		<None Update="TestData\NonExistingProjectSolution.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="_TestData\TestSolutions\EmptySolution.txt">
+		<None Update="TestData\EmptySolution.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="_TestData\TestSolutions\Project2.csproj">
+		<None Include="TestData\Project2.csproj">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="_TestData\TestSolutions\Project1.csproj">
+		<None Include="TestData\Project1.csproj">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-
 </Project>
