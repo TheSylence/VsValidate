@@ -14,6 +14,6 @@ Get-ChildItem $resultFolder -Filter *.xml -Recurse | ForEach-Object {
         Write-Error "Code coverage too low. Lines: $($lines)%, branches: $($branches)%, threshold: $($threshold)%"
     }
     else {
-        Move-Item -Path $_ -Destination "$($resultFolder)/.."
+        Copy-Item -Path $_ -Destination coverage.cobertura.xml
     }
 }
