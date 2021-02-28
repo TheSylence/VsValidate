@@ -1,4 +1,10 @@
 # VsValidate
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/TheSylence/VsValidate)
+[![CI](https://github.com/TheSylence/VsValidate/actions/workflows/Ci.yml/badge.svg?branch=main)](https://github.com/TheSylence/VsValidate/actions/workflows/Ci.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bbb3b3809fee449f8a0326a1de0e49ff)](https://www.codacy.com/gh/TheSylence/VsValidate/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TheSylence/VsValidate&amp;utm_campaign=Badge_Grade)
+![Codacy coverage](https://img.shields.io/codacy/coverage/bbb3b3809fee449f8a0326a1de0e49ff)
+![GitHub](https://img.shields.io/github/license/TheSylence/VsValidate)
+
 Validator for Visual Studio projects to make sure all projects in a solution are configured properly.
 
 ## Usage
