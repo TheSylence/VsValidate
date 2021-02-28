@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Install .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Extract version from tag name
+        uses: olegtarasov/get-tag@v2.1
+        id: tagName
+        with:
+          tagRegex: "[v]?(?<prefix>[^-\\s]+)[-]?(?<suffix>.*)"
+
+      - name: Publish Windows executable
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r win-x64 -o Publish/win-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
+
+      - name: Publish Linux executable
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r liunx-x64 -o Publish/linux-x64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
+
+      - name: Publish Linux executable for ARM
+        run: dotnet publish VsValidate/VsValidate.csproj -c Release -r liunx-arm64 -o Publish/linux-arm64 /p:VersionPrefix=${{ steps.tagName.outputs.prefix }} /p:VersionSuffix=${{ steps.tagName.outputs.suffix }}
+
+      - name: Create github release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "Publish/win-x64/*,Publish/linux-x64/*,Publish/linux-arm64/*"
+          draft: true
+          prerelease: ${{ steps.tagName.outputs.suffix != '' }}

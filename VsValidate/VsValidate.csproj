@@ -7,6 +7,13 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<VersionSuffix Condition=" '$(Configuration)' == 'Debug' ">dev</VersionSuffix>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
 		<PackageReference Include="McSherry.SemanticVersioning" Version="1.4.1" />
