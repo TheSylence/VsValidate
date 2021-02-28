@@ -31,3 +31,15 @@ jobs:
       - name: Run integration Tests
         shell: pwsh
         run: .github/workflows/run-integration-tests.ps1 -baseFolder TestCases -exe VsValidate/bin/Release/net5.0/VsValidate.dll
+
+      - name: Setup Java for CodeCoverage results
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Download Coverage reporter
+        run: Invoke-WebRequest -Uri 'https://github.com/codacy/codacy-coverage-reporter/releases/download/11.11.0/codacy-coverage-reporter-assembly.jar' -UseBasicParsing -OutFile  ./codacy-test-reporter.jar
+
+      - name: Upload code coverage
+        run: .github/workflows/upload-code-coverage.ps1 -token ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: github.head_ref == 0
