@@ -9,6 +9,7 @@
 
 	<PropertyGroup>
 		<VersionSuffix Condition=" '$(Configuration)' == 'Debug' ">dev</VersionSuffix>
+		<DebugType Condition=" '$(Configuration)' == 'Release' ">None</DebugType>
 		<SelfContained>false</SelfContained>
 		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	</PropertyGroup>
