@@ -10,7 +10,7 @@ Validator for Visual Studio projects to make sure all projects in a solution are
 ## Requirements
 .NET Core 5.0 Runtime must be installed on the machine.
 If you build your app using `dotnet` you probably have installed the .NET Core SDK which includes the runtime.
-The runtime doesn't have to installed separately in this case.
+The runtime doesn't have to be installed separately in this case.
 
 The app should work on Windows x64, Linux x64 and Linux Arm64.
 
@@ -18,6 +18,10 @@ The app should work on Windows x64, Linux x64 and Linux Arm64.
 Call the program with your configuration file and specify which projects (or solutions) to validate.
 
 `vsvalidate.exe --config your-configuration-file.yml --project your-project.sln`
+
+Validation errors will be written to stderr and the exit code of the program is either 0 (validation successful) or 1 (validation failed).
+
+You can specify the `--verbose` switch to enable verbose logging to stdout or `--silent` to suppress all output.
 
 ## Configuration
 Configurations are stored in simply YAML files and are easily editable.
