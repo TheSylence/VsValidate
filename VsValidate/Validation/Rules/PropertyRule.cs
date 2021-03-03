@@ -28,7 +28,7 @@ namespace VsValidate.Validation.Rules
 					$"Property {_data.Name} was specified {properties.Count} times but is required {_data.MaximumOccurrences} times.");
 			}
 
-			if (!properties.Any() && !_data.Optional)
+			if (!properties.Any() && _data.Required)
 				return ValidationResult.Error($"Property {_data.Name} not specified");
 
 			if (properties.Any() && _data.Forbidden)

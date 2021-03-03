@@ -9,7 +9,7 @@ namespace VsValidate.Validation.Rules
 		[UsedImplicitly] public int? MaximumOccurrences { get; set; }
 		[UsedImplicitly] public int? MinimumOccurrences { get; set; }
 		[UsedImplicitly] public string Name { get; set; } = string.Empty;
-		[UsedImplicitly] public bool Optional { get; set; }
+		[UsedImplicitly] public bool Required { get; set; }
 		[UsedImplicitly] public string? Value { get; set; }
 	}
 }

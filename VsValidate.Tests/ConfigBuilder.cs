@@ -17,11 +17,11 @@ namespace VsValidate.Tests
 
 				foreach (var property in _properties)
 				{
-					var optional = property.Optional ? "true" : "false";
+					var required = property.Required ? "true" : "false";
 					var forbidden = property.Forbidden ? "true" : "false";
 
 					sb.AppendLine($"  - name: {property.Name}");
-					sb.AppendLine($"    optional: {optional}");
+					sb.AppendLine($"    required: {required}");
 					sb.AppendLine($"    forbidden: {forbidden}");
 					if (!string.IsNullOrEmpty(property.Value))
 						sb.AppendLine($"    value: {property.Value}");
@@ -75,12 +75,12 @@ namespace VsValidate.Tests
 			return this;
 		}
 
-		public ConfigBuilder WithProperty(string name, string? value = null, bool optional = true, bool forbidden = false,
+		public ConfigBuilder WithProperty(string name, string? value = null, bool required = true, bool forbidden = false,
 			int? minimumOccurrences = null, int? maximumOccurrences = null) => WithProperty(new PropertyRuleData
 		{
 			Name = name,
 			Value = value,
-			Optional = optional,
+			Required = required,
 			Forbidden = forbidden,
 			MaximumOccurrences = maximumOccurrences,
 			MinimumOccurrences = minimumOccurrences

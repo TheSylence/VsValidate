@@ -31,11 +31,11 @@ Sample configuration:
 properties:
     - name: TreatWarningsAsErrors
       value: True
-      optional: false
+      required: true
 
     - name: TargetFramework
       value: net5.0
-      optional: false
+      required: true
 ```
 
 This configuration checks that all projects are built for .NET 5.0 and have *Treat warnings as errors* enabled.

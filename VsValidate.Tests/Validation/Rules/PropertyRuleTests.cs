@@ -37,7 +37,7 @@ namespace VsValidate.Tests.Validation.Rules
 			var data = new PropertyRuleData
 			{
 				Name = "Required-Property",
-				Optional = false
+				Required = true
 			};
 
 			var sut = new PropertyRule(data);
@@ -137,7 +137,7 @@ namespace VsValidate.Tests.Validation.Rules
 			var data = new PropertyRuleData
 			{
 				Name = "TreatWarningsAsErrors",
-				Optional = false
+				Required = true
 			};
 
 			var sut = new PropertyRule(data);
@@ -161,7 +161,7 @@ namespace VsValidate.Tests.Validation.Rules
 			var data = new PropertyRuleData
 			{
 				Name = "TreatWarningsAsErrors",
-				Optional = false,
+				Required = true,
 				Value = "true"
 			};
 
