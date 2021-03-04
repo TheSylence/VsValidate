@@ -28,6 +28,12 @@ Get-ChildItem $succeedingFolder -Filter *.yml | ForEach-Object {
     }
 }
 
+& dotnet $exe --config $($baseFolder)/VsValidate.yml --project $($baseFolder)/../VsValidate.sln > $null 2>&1
+if ( $LASTEXITCODE -ne 0 ) {
+    Write-Error "Expected validation of VsValidate.sln to succeed but it did not"
+    $failedTests = $true
+}
+
 if ( $failedTests ) {
     Write-Error "One or more tests have failed"
     Exit 1

@@ -1,0 +1,8 @@
+properties:
+  - name: TargetFramework
+    required: true
+    value: 'net5.0'
+
+  - name: nullable
+    required: true
+    value: 'enable'
