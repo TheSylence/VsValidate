@@ -61,7 +61,7 @@ Checks that a property is correctly configured in all projects. Listed under `pr
 |---|---|---|---|
 | `name` | Name of the property. Case sensitive. | Yes | |
 | `forbidden` | Fail validation if property exists. | No | `false` |
-| `optional` | Don't fail validation when property is not found. | No | `false` |
+| `required` | Fail validation when property is not found. | No | `false` |
 | `maximumOccurrences` | Fail validation if property is found more than `n` times in a project. | No | Don't check number of occurrences |
 | `minimumOccurrences` | Fail validation if property is found less than `n` times in a project. | No | Don't check number of occurrences |
 | `value` | Fail validation if property does not have this value. Case sensitive | No | Don't check value |
