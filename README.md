@@ -75,3 +75,12 @@ Checks that a package is correctly referenced in all projects. Listed under `pac
 | `required` | Fails validation if package is not referenced | No | `false` |
 | `forbidden` | Fails validation if package is referenced | No | `false` |
 | `version` | Fails validation if installed version of the package does not fall in this range. (See [https://github.com/npm/node-semver#versions](https://github.com/npm/node-semver#versions) for a reference for version ranges) | No | Don't check version | 
+
+### Project Reference
+Checks that a project is correctly referenced in all projects. Listed under `projects` in your configuration file.
+
+| Field | Description | Required? | Default value |
+|---|---|---|---|
+| `name` | Name of the referenced project (paths are ignored). Case sensitive | Yes |
+| `required` | Fails validation if project is not referenced. | No | `false` |
+| `forbidden` | Fails validation if project is referenced. | No | `false ` |

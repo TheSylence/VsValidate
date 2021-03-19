@@ -19,5 +19,13 @@ namespace VsValidate.Validation
 
 			return new PackageReferenceRule(data);
 		}
+
+		public IRule? Construct(ProjectReferenceRuleData data)
+		{
+			if (string.IsNullOrEmpty(data.Name))
+				return null;
+
+			return new ProjectReferenceRule(data);
+		}
 	}
 }

@@ -12,11 +12,13 @@ namespace VsValidate.VisualStudio
 			_itemGroups = ReadItemGroups(xml).ToList();
 
 			PackageReferences = ReadPackageReferences().ToList();
+			ProjectReferences = ReadProjectReferences().ToList();
 
 			Sdk = xml.Root?.Attribute("Sdk")?.Value ?? string.Empty;
 		}
 
 		public ICollection<IPackageReference> PackageReferences { get; }
+		public ICollection<IProjectReference> ProjectReferences { get; }
 
 		public ICollection<IPropertyGroup> PropertyGroups { get; }
 		public string Sdk { get; }
@@ -56,6 +58,19 @@ namespace VsValidate.VisualStudio
 				foreach (var packageReference in references.Select(r => new PackageReference(r, itemGroup.Condition)))
 				{
 					yield return packageReference;
+				}
+			}
+		}
+
+		private IEnumerable<IProjectReference> ReadProjectReferences()
+		{
+			foreach (var itemGroup in _itemGroups)
+			{
+				var references = itemGroup.Descendants("ProjectReference");
+
+				foreach (var projectReference in references.Select(r => new ProjectReference(r, itemGroup.Condition)))
+				{
+					yield return projectReference;
 				}
 			}
 		}

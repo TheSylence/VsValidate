@@ -34,6 +34,7 @@ namespace VsValidate.Tests.Validation
 			var config = new ConfigBuilder()
 				.WithProperty(new PropertyRuleData())
 				.WithPackage(new PackageReferenceRuleData())
+				.WithProjectReference(new ProjectReferenceRuleData())
 				.ToString();
 
 			using var file = new TempFile();
@@ -42,6 +43,7 @@ namespace VsValidate.Tests.Validation
 			var rulesFactory = Substitute.For<IRuleFactory>();
 			rulesFactory.Construct(Arg.Any<PackageReferenceRuleData>()).Returns((IRule?) null);
 			rulesFactory.Construct(Arg.Any<PropertyRuleData>()).Returns((IRule?) null);
+			rulesFactory.Construct(Arg.Any<ProjectReferenceRuleData>()).Returns((IRule?) null);
 			var output = Substitute.For<IOutput>();
 			var sut = new RulesLoader(rulesFactory, output);
 
@@ -52,6 +54,7 @@ namespace VsValidate.Tests.Validation
 			Assert.Empty(actual);
 			rulesFactory.Received(1).Construct(Arg.Any<PropertyRuleData>());
 			rulesFactory.Received(1).Construct(Arg.Any<PackageReferenceRuleData>());
+			rulesFactory.Received(1).Construct(Arg.Any<ProjectReferenceRuleData>());
 		}
 
 		[Fact]
@@ -72,7 +75,7 @@ namespace VsValidate.Tests.Validation
 		}
 
 		[Fact]
-		public async Task LoadRulesShouldOnlyReturnPackagesWhenNotGivenProperties()
+		public async Task LoadRulesShouldOnlyReturnPackagesWhenOnlyGivenPackages()
 		{
 			// Arrange
 			var config = new ConfigBuilder()
@@ -95,10 +98,38 @@ namespace VsValidate.Tests.Validation
 			Assert.Equal(2, actual.Count);
 			rulesFactory.Received(2).Construct(Arg.Any<PackageReferenceRuleData>());
 			rulesFactory.DidNotReceive().Construct(Arg.Any<PropertyRuleData>());
+			rulesFactory.DidNotReceive().Construct(Arg.Any<ProjectReferenceRuleData>());
 		}
 
 		[Fact]
-		public async Task LoadRulesShouldOnlyReturnPropertiesWhenNotGivenPackages()
+		public async Task LoadRulesShouldOnlyReturnProjectReferencesWhenOnlyGivenProjectReferences()
+		{
+			// Arrange
+			var config = new ConfigBuilder()
+				.WithProjectReference(new ProjectReferenceRuleData {Name = "project1"})
+				.WithProjectReference(new ProjectReferenceRuleData {Name = "project2"})
+				.ToString();
+
+			using var file = new TempFile();
+			await File.WriteAllTextAsync(file, config);
+
+			var rulesFactory = Substitute.For<IRuleFactory>();
+			rulesFactory.Construct(Arg.Any<ProjectReferenceRuleData>()).Returns(Substitute.For<IRule>());
+			var output = Substitute.For<IOutput>();
+			var sut = new RulesLoader(rulesFactory, output);
+
+			// Act
+			var actual = await sut.LoadRules(file).ToListAsync();
+
+			// Assert
+			Assert.Equal(2, actual.Count);
+			rulesFactory.Received(2).Construct(Arg.Any<ProjectReferenceRuleData>());
+			rulesFactory.DidNotReceive().Construct(Arg.Any<PackageReferenceRuleData>());
+			rulesFactory.DidNotReceive().Construct(Arg.Any<PropertyRuleData>());
+		}
+
+		[Fact]
+		public async Task LoadRulesShouldOnlyReturnPropertiesWhenOnlyGivenPackages()
 		{
 			// Arrange
 			var config = new ConfigBuilder()
@@ -121,6 +152,7 @@ namespace VsValidate.Tests.Validation
 			Assert.Equal(2, actual.Count);
 			rulesFactory.Received(2).Construct(Arg.Any<PropertyRuleData>());
 			rulesFactory.DidNotReceive().Construct(Arg.Any<PackageReferenceRuleData>());
+			rulesFactory.DidNotReceive().Construct(Arg.Any<ProjectReferenceRuleData>());
 		}
 	}
 }

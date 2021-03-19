@@ -50,6 +50,22 @@ namespace VsValidate.Tests
 				}
 			}
 
+			if (_projectReferences.Any())
+			{
+				sb.AppendLine("projects:");
+
+				foreach (var reference in _projectReferences)
+				{
+					var forbidden = reference.Forbidden ? "true" : "false";
+					var required = reference.Required ? "true" : "false";
+
+					sb.AppendLine($"  - name: {reference.Name}");
+					sb.AppendLine($"    required: {required}");
+					sb.AppendLine($"    forbidden: {forbidden}");
+
+					sb.AppendLine();
+				}
+			}
 
 			return sb.ToString();
 		}
@@ -68,6 +84,12 @@ namespace VsValidate.Tests
 			Forbidden = forbidden,
 			Required = required
 		});
+
+		public ConfigBuilder WithProjectReference(ProjectReferenceRuleData data)
+		{
+			_projectReferences.Add(data);
+			return this;
+		}
 
 		public ConfigBuilder WithProperty(PropertyRuleData data)
 		{
@@ -88,5 +110,6 @@ namespace VsValidate.Tests
 
 		private readonly List<PropertyRuleData> _properties = new();
 		private readonly List<PackageReferenceRuleData> _packageReferences = new();
+		private readonly List<ProjectReferenceRuleData> _projectReferences = new();
 	}
 }

@@ -39,6 +39,37 @@ namespace VsValidate.Tests.Validation
 		}
 
 		[Fact]
+		public void ProjectReferenceRuleShouldBeConstructable()
+		{
+			// Arrange
+			var data = new ProjectReferenceRuleData
+			{
+				Name = Guid.NewGuid().ToString()
+			};
+			var sut = new RuleFactory();
+
+			// Act
+			var actual = sut.Construct(data);
+
+			// Assert
+			Assert.NotNull(actual);
+		}
+
+		[Fact]
+		public void ProjectReferenceShouldNotBeConstructableWhenNameIsMissing()
+		{
+			// Arrange
+			var data = new ProjectReferenceRuleData();
+			var sut = new RuleFactory();
+
+			// Act
+			var actual = sut.Construct(data);
+
+			// Assert
+			Assert.Null(actual);
+		}
+
+		[Fact]
 		public void PropertyRuleShouldBeConstructable()
 		{
 			// Arrange

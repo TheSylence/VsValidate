@@ -2,18 +2,16 @@
 
 namespace VsValidate.VisualStudio
 {
-	internal class PackageReference : IPackageReference
+	internal class ProjectReference : IProjectReference
 	{
-		public PackageReference(XElement element, ICondition? condition)
+		public ProjectReference(XElement element, ICondition? condition)
 		{
 			Condition = condition;
 			Name = element.Attribute("Include")?.Value ?? string.Empty;
-			Version = element.Attribute("Version")?.Value ?? string.Empty;
 		}
 
 		public ICondition? Condition { get; }
 
 		public string Name { get; }
-		public string Version { get; }
 	}
 }

@@ -5,6 +5,7 @@ namespace VsValidate.VisualStudio
 	internal interface IProject
 	{
 		ICollection<IPackageReference> PackageReferences { get; }
+		ICollection<IProjectReference> ProjectReferences { get; }
 		ICollection<IPropertyGroup> PropertyGroups { get; }
 
 		string Sdk { get; }

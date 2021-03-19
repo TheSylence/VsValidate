@@ -1,9 +1,8 @@
 ﻿namespace VsValidate.VisualStudio
 {
-	internal interface IPackageReference
+	internal interface IProjectReference
 	{
 		ICondition? Condition { get; }
 		string Name { get; }
-		string Version { get; }
 	}
 }

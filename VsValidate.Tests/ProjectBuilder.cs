@@ -49,6 +49,12 @@ namespace VsValidate.Tests
 						new XAttribute("Version", packageReference.Version)));
 				}
 
+				foreach (var projectReference in itemGroup.ProjectReferences)
+				{
+					element.Add(new XElement("ProjectReference",
+						new XAttribute("Include", projectReference.Path)));
+				}
+
 				project.Add(element);
 			}
 
@@ -70,6 +76,16 @@ namespace VsValidate.Tests
 
 			var reference = new PackageReference(name, version);
 			_currentItemGroup.PackageReferences.Add(reference);
+			return this;
+		}
+
+		public ProjectBuilder WithProjectReference(string path)
+		{
+			if (_currentItemGroup == null)
+				throw new InvalidOperationException("No ItemGroup created");
+
+			var reference = new ProjectReference(path);
+			_currentItemGroup.ProjectReferences.Add(reference);
 			return this;
 		}
 
@@ -116,6 +132,7 @@ namespace VsValidate.Tests
 
 			public string? Condition { get; }
 			public List<PackageReference> PackageReferences { get; } = new();
+			public List<ProjectReference> ProjectReferences { get; } = new();
 		}
 
 		private class PackageReference
@@ -128,6 +145,16 @@ namespace VsValidate.Tests
 
 			public string Name { get; }
 			public string Version { get; }
+		}
+
+		private class ProjectReference
+		{
+			public ProjectReference(string path)
+			{
+				Path = path;
+			}
+
+			public string Path { get; }
 		}
 
 		private class Property

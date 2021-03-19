@@ -6,5 +6,6 @@ namespace VsValidate.Validation
 	{
 		IRule? Construct(PropertyRuleData data);
 		IRule? Construct(PackageReferenceRuleData data);
+		IRule? Construct(ProjectReferenceRuleData data);
 	}
 }

@@ -62,6 +62,18 @@ namespace VsValidate.Validation
 						_output.Warning("Malformed property rule. Ignoring.");
 				}
 			}
+
+			if (rulesList.Projects != null)
+			{
+				foreach (var data in rulesList.Projects)
+				{
+					var rule = _ruleFactory.Construct(data);
+					if (rule != null)
+						yield return rule;
+					else
+						_output.Warning("Malformed project reference rule. Ignoring.");
+				}
+			}
 		}
 
 		private readonly IRuleFactory _ruleFactory;
