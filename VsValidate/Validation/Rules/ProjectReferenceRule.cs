@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using VsValidate.VisualStudio;
 
@@ -15,7 +16,7 @@ namespace VsValidate.Validation.Rules
 
 		private ValidationResult ValidateSync(IProject project)
 		{
-			var reference = project.ProjectReferences.FirstOrDefault(r => r.Name == _data.Name);
+			var reference = project.ProjectReferences.FirstOrDefault(r => Path.GetFileName(r.Name) == _data.Name);
 			if (reference == null)
 			{
 				return _data.Required

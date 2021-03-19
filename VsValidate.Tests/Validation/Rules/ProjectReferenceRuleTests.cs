@@ -52,6 +52,30 @@ namespace VsValidate.Tests.Validation.Rules
 		}
 
 		[Fact]
+		public async Task ValidateShouldSucceedWhenNameMatchesButPathDoesnt()
+		{
+			// Arrange
+			var project = new ProjectBuilder()
+				.WithItemGroup()
+				.WithProjectReference("Path/Project")
+				.Build();
+
+			var data = new ProjectReferenceRuleData
+			{
+				Name = "Project",
+				Required = true
+			};
+
+			var sut = new ProjectReferenceRule(data);
+
+			// Act
+			var actual = await sut.Validate(project);
+
+			// Assert
+			Assert.False(actual.IsError);
+		}
+
+		[Fact]
 		public async Task ValidateShouldSucceedWhenOptionalProjectIsReferenced()
 		{
 			// Arrange
