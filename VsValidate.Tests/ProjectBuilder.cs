@@ -44,9 +44,18 @@ namespace VsValidate.Tests
 
 				foreach (var packageReference in itemGroup.PackageReferences)
 				{
-					element.Add(new XElement("PackageReference",
-						new XAttribute("Include", packageReference.Name),
-						new XAttribute("Version", packageReference.Version)));
+					var xElement = new XElement("PackageReference",
+						new XAttribute("Include", packageReference.Name));
+
+					if (packageReference.Version != null)
+					{
+						if (packageReference.IsVersionNested)
+							xElement.Add(new XElement("Version", packageReference.Version));
+						else
+							xElement.Add(new XAttribute("Version", packageReference.Version));
+					}
+
+					element.Add(xElement);
 				}
 
 				foreach (var projectReference in itemGroup.ProjectReferences)
@@ -69,12 +78,12 @@ namespace VsValidate.Tests
 			return this;
 		}
 
-		public ProjectBuilder WithPackageReference(string name, string version)
+		public ProjectBuilder WithPackageReference(string name, string? version, bool versionNested = false)
 		{
 			if (_currentItemGroup == null)
 				throw new InvalidOperationException("No ItemGroup created");
 
-			var reference = new PackageReference(name, version);
+			var reference = new PackageReference(name, version, versionNested);
 			_currentItemGroup.PackageReferences.Add(reference);
 			return this;
 		}
@@ -137,14 +146,16 @@ namespace VsValidate.Tests
 
 		private class PackageReference
 		{
-			public PackageReference(string name, string version)
+			public PackageReference(string name, string? version, bool nestVersion)
 			{
 				Name = name;
 				Version = version;
+				IsVersionNested = nestVersion;
 			}
 
 			public string Name { get; }
-			public string Version { get; }
+			public string? Version { get; }
+			public bool IsVersionNested { get; }
 		}
 
 		private class ProjectReference
