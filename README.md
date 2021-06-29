@@ -24,7 +24,7 @@ Validation errors will be written to stderr and the exit code of the program is 
 You can specify the `--verbose` switch to enable verbose logging to stdout or `--silent` to suppress all output.
 
 ## Configuration
-Configurations are stored in simply YAML files and are easily editable.
+Configurations are stored in simple YAML files and are easily editable.
 
 Sample configuration:
 ```yml
