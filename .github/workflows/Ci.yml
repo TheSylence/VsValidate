@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
+    branches: 
       - "*"
 
 defaults:
@@ -38,10 +38,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+        if: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Download Coverage reporter
         run: Invoke-WebRequest -Uri 'https://github.com/codacy/codacy-coverage-reporter/releases/download/11.11.0/codacy-coverage-reporter-assembly.jar' -UseBasicParsing -OutFile  ./codacy-test-reporter.jar
+        if: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Upload code coverage
         run: .github/workflows/upload-code-coverage.ps1 -token ${{ secrets.CODACY_PROJECT_TOKEN }}
-        if: github.head_ref == 0
+        if: ${{ github.ref == 'refs/heads/main' }}
