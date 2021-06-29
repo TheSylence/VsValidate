@@ -46,6 +46,13 @@ namespace VsValidate.Tests
 					if (!string.IsNullOrEmpty(package.Version))
 						sb.AppendLine($"    version: {package.Version}");
 
+					if (!package.IncludeAssets.Any())
+						sb.AppendLine($"    includeAssets: ['{string.Join("','", package.IncludeAssets)}']");
+					if (!package.ExcludeAssets.Any())
+						sb.AppendLine($"    excludeAssets: ['{string.Join("','", package.ExcludeAssets)}']");
+					if (!package.PrivateAssets.Any())
+						sb.AppendLine($"    privateAssets: ['{string.Join("','", package.PrivateAssets)}']");
+
 					sb.AppendLine();
 				}
 			}

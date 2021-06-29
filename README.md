@@ -75,6 +75,9 @@ Checks that a package is correctly referenced in all projects. Listed under `pac
 | `required` | Fails validation if package is not referenced | No | `false` |
 | `forbidden` | Fails validation if package is referenced | No | `false` |
 | `version` | Fails validation if installed version of the package does not fall in this range. (See [https://github.com/npm/node-semver#versions](https://github.com/npm/node-semver#versions) for a reference for version ranges) | No | Don't check version | 
+| `includeAssets` | Validation fails if not all values specified are found in the validated project | No | Don't validate |
+| `excludeAssets` | Validation fails if not all values specified are found in the validated project | No | Don't validate |
+| `privateAssets` | Validation fails if not all values specified are found in the validated project | No | Don't validate |
 
 ### Project Reference
 Checks that a project is correctly referenced in all projects. Listed under `projects` in your configuration file.

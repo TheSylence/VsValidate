@@ -55,6 +55,13 @@ namespace VsValidate.Tests
 							xElement.Add(new XAttribute("Version", packageReference.Version));
 					}
 
+					if (!string.IsNullOrEmpty(packageReference.IncludeAssets))
+						xElement.Add(new XElement("IncludeAssets", packageReference.IncludeAssets));
+					if (!string.IsNullOrEmpty(packageReference.ExcludeAssets))
+						xElement.Add(new XElement("ExcludeAssets", packageReference.ExcludeAssets));
+					if (!string.IsNullOrEmpty(packageReference.PrivateAssets))
+						xElement.Add(new XElement("PrivateAssets", packageReference.PrivateAssets));
+
 					element.Add(xElement);
 				}
 
@@ -78,12 +85,15 @@ namespace VsValidate.Tests
 			return this;
 		}
 
-		public ProjectBuilder WithPackageReference(string name, string? version, bool versionNested = false)
+		public ProjectBuilder WithPackageReference(string name, string? version,
+			bool versionNested = false, string? includeAssets = null, string? excludeAssets = null,
+			string? privateAssets = null)
 		{
 			if (_currentItemGroup == null)
 				throw new InvalidOperationException("No ItemGroup created");
 
-			var reference = new PackageReference(name, version, versionNested);
+			var reference =
+				new PackageReference(name, version, versionNested, includeAssets, excludeAssets, privateAssets);
 			_currentItemGroup.PackageReferences.Add(reference);
 			return this;
 		}
@@ -146,16 +156,24 @@ namespace VsValidate.Tests
 
 		private class PackageReference
 		{
-			public PackageReference(string name, string? version, bool nestVersion)
+			public PackageReference(string name, string? version, bool nestVersion, string? includeAssets,
+				string? excludeAssets, string? privateAssets)
 			{
 				Name = name;
 				Version = version;
 				IsVersionNested = nestVersion;
+				IncludeAssets = includeAssets;
+				ExcludeAssets = excludeAssets;
+				PrivateAssets = privateAssets;
 			}
 
-			public string Name { get; }
-			public string? Version { get; }
+			public string? ExcludeAssets { get; }
+			public string? IncludeAssets { get; }
 			public bool IsVersionNested { get; }
+
+			public string Name { get; }
+			public string? PrivateAssets { get; }
+			public string? Version { get; }
 		}
 
 		private class ProjectReference
