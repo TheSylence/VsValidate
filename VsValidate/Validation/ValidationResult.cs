@@ -1,23 +1,31 @@
-﻿namespace VsValidate.Validation
+﻿using VsValidate.VisualStudio;
+
+namespace VsValidate.Validation
 {
 	internal class ValidationResult
 	{
 		private ValidationResult()
 		{
 			IsError = false;
-			Message = string.Empty;
+			_message = string.Empty;
+			_project = null;
 		}
 
-		private ValidationResult(string message)
+		private ValidationResult(string message, IProject? project)
 		{
 			IsError = true;
-			Message = message;
+			_message = message;
+			_project = project;
 		}
 
-		public bool IsError { get; }
-		public string Message { get; }
+		private readonly string _message;
+		private readonly IProject? _project;
 
-		public static ValidationResult Error(string message) => new(message);
+		public bool IsError { get; }
+
+		public string Message => _project != null ? $"[{_project.FileName}] {_message}" : _message;
+
+		public static ValidationResult Error(IProject project, string message) => new(message, project);
 		public static ValidationResult Success() => new();
 	}
 }

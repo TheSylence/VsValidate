@@ -90,7 +90,7 @@ namespace VsValidate.VisualStudio
 			try
 			{
 				var doc = XDocument.Parse(content);
-				return new Project(doc);
+				return new Project(doc, projectFile.FullName);
 			}
 			catch (Exception exception)
 			{

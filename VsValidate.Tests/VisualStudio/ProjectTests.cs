@@ -47,6 +47,22 @@ namespace VsValidate.Tests.VisualStudio
 		}
 
 		[Fact]
+		public void FileNameShouldBeSet()
+		{
+			// Arrange
+			var xml = new ProjectBuilder().BuildXml();
+			const string expected = "expected";
+
+			var sut = new Project(xml, expected);
+
+			// Act
+			var actual = sut.FileName;
+
+			// Assert
+			Assert.Equal(expected, actual);
+		}
+
+		[Fact]
 		public void FindPropertyByNameShouldNotFindNonMatchingProperties()
 		{
 			// Arrange

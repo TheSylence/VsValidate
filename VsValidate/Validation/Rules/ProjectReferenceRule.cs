@@ -20,12 +20,12 @@ namespace VsValidate.Validation.Rules
 			if (reference == null)
 			{
 				return _data.Required
-					? ValidationResult.Error($"Missing project reference {_data.Name}")
+					? ValidationResult.Error(project, $"Missing project reference {_data.Name}")
 					: ValidationResult.Success();
 			}
 
 			if (_data.Forbidden)
-				return ValidationResult.Error($"Forbidden project reference {_data.Name}");
+				return ValidationResult.Error(project, $"Forbidden project reference {_data.Name}");
 
 			return ValidationResult.Success();
 		}

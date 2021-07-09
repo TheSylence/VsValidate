@@ -16,7 +16,7 @@ namespace VsValidate.Validation.Rules
 
 		public Task<ValidationResult> Validate(IProject project) => Task.FromResult(ValidateSync(project));
 
-		private ValidationResult ValidateAssets(IPackageReference reference, AssetsProperty property)
+		private ValidationResult ValidateAssets(IPackageReference reference, AssetsProperty property, IProject project)
 		{
 			var inProject = Array.Empty<string>();
 			switch (property)
@@ -53,31 +53,31 @@ namespace VsValidate.Validation.Rules
 			var missingInProject = inConfig.Except(inProject).ToList();
 			if (missingInProject.Any())
 			{
-				return ValidationResult.Error(
+				return ValidationResult.Error(project,
 					$"Missing {property}Asset entry in project: {string.Join(",", missingInProject)}");
 			}
 
 			var extraInProject = inProject.Except(inConfig).ToList();
 			if (extraInProject.Any())
 			{
-				return ValidationResult.Error(
+				return ValidationResult.Error(project,
 					$"Extra {property}Asset entry in project: {string.Join(",", extraInProject)}");
 			}
 
 			return ValidationResult.Success();
 		}
 
-		private ValidationResult ValidateAssets(IPackageReference reference)
+		private ValidationResult ValidateAssets(IPackageReference reference, IProject project)
 		{
-			var validation = ValidateAssets(reference, AssetsProperty.Include);
+			var validation = ValidateAssets(reference, AssetsProperty.Include, project);
 			if (validation.IsError)
 				return validation;
 
-			validation = ValidateAssets(reference, AssetsProperty.Exclude);
+			validation = ValidateAssets(reference, AssetsProperty.Exclude, project);
 			if (validation.IsError)
 				return validation;
 
-			validation = ValidateAssets(reference, AssetsProperty.Private);
+			validation = ValidateAssets(reference, AssetsProperty.Private, project);
 			if (validation.IsError)
 				return validation;
 
@@ -90,35 +90,35 @@ namespace VsValidate.Validation.Rules
 			if (reference == null)
 			{
 				return _data.Required
-					? ValidationResult.Error($"Missing package {_data.Name}")
+					? ValidationResult.Error(project, $"Missing package {_data.Name}")
 					: ValidationResult.Success();
 			}
 
 			if (_data.Forbidden)
-				return ValidationResult.Error($"Forbidding package {_data.Name}");
+				return ValidationResult.Error(project, $"Forbidding package {_data.Name}");
 
-			var validation = ValidateVersion(reference);
+			var validation = ValidateVersion(reference, project);
 			if (validation.IsError)
 				return validation;
 
-			validation = ValidateAssets(reference);
+			validation = ValidateAssets(reference, project);
 			if (validation.IsError)
 				return validation;
 
 			return ValidationResult.Success();
 		}
 
-		private ValidationResult ValidateVersion(IPackageReference reference)
+		private ValidationResult ValidateVersion(IPackageReference reference, IProject project)
 		{
 			if (string.IsNullOrEmpty(_data.Version))
 				return ValidationResult.Success();
 
 			if (!VersionRange.TryParse(_data.Version, out var range))
-				return ValidationResult.Error($"Invalid semantic version range given: {_data.Version}");
+				return ValidationResult.Error(project, $"Invalid semantic version range given: {_data.Version}");
 
 			if (!range!.SatisfiedBy(SemanticVersion.Parse(reference.Version)))
 			{
-				return ValidationResult.Error(
+				return ValidationResult.Error(project, 
 					$"Version of {_data.Name} ({reference.Version}) das not match required version ({_data.Version})");
 			}
 

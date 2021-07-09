@@ -15,7 +15,7 @@ namespace VsValidate.Tests
 		public Project Build()
 		{
 			var doc = BuildXml();
-			return new Project(doc);
+			return new Project(doc, "##TestProject##");
 		}
 
 		public XDocument BuildXml()

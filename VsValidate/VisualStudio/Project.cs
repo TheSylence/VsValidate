@@ -7,7 +7,13 @@ namespace VsValidate.VisualStudio
 	internal class Project : IProject
 	{
 		public Project(XDocument xml)
+			: this(xml, string.Empty)
 		{
+		}
+
+		public Project(XDocument xml, string fileName)
+		{
+			FileName = fileName;
 			PropertyGroups = ReadPropertyGroups(xml).ToList();
 			_itemGroups = ReadItemGroups(xml).ToList();
 
@@ -16,6 +22,8 @@ namespace VsValidate.VisualStudio
 
 			Sdk = xml.Root?.Attribute("Sdk")?.Value ?? string.Empty;
 		}
+
+		public string FileName { get; }
 
 		public ICollection<IPackageReference> PackageReferences { get; }
 		public ICollection<IProjectReference> ProjectReferences { get; }

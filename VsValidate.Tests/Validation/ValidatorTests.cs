@@ -30,7 +30,8 @@ namespace VsValidate.Tests.Validation
 		private static IRule ConstructErrorRule(string message)
 		{
 			var rule = Substitute.For<IRule>();
-			rule.Validate(Arg.Any<IProject>()).Returns(ValidationResult.Error(message));
+			var project = Substitute.For<IProject>();
+			rule.Validate(Arg.Any<IProject>()).Returns(ValidationResult.Error(project, message));
 			return rule;
 		}
 

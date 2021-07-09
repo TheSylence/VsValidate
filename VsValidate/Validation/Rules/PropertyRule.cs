@@ -18,21 +18,21 @@ namespace VsValidate.Validation.Rules
 			var properties = project.FindPropertyByName(_data.Name).ToList();
 			if (properties.Count > _data.MaximumOccurrences)
 			{
-				return ValidationResult.Error(
+				return ValidationResult.Error(project,
 					$"Property {_data.Name} was specified {properties.Count} times but only {_data.MaximumOccurrences} occurrences are allowed.");
 			}
 
 			if (properties.Count < _data.MinimumOccurrences)
 			{
-				return ValidationResult.Error(
+				return ValidationResult.Error(project,
 					$"Property {_data.Name} was specified {properties.Count} times but is required {_data.MaximumOccurrences} times.");
 			}
 
 			if (!properties.Any() && _data.Required)
-				return ValidationResult.Error($"Property {_data.Name} not specified");
+				return ValidationResult.Error(project, $"Property {_data.Name} not specified");
 
 			if (properties.Any() && _data.Forbidden)
-				return ValidationResult.Error($"Forbidden property {_data.Name} specified");
+				return ValidationResult.Error(project, $"Forbidden property {_data.Name} specified");
 
 			if (_data.Value != null)
 			{
@@ -40,7 +40,7 @@ namespace VsValidate.Validation.Rules
 				{
 					if (_data.Value != property.Value)
 					{
-						return ValidationResult.Error(
+						return ValidationResult.Error(project, 
 							$"Property {_data.Name} has invalid value ({property.Value} instead of {_data.Value})");
 					}
 				}
