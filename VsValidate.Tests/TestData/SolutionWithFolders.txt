@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project1", "Project1.csproj", "{DFDE40AB-FA80-4690-8436-0B1BFEC8485B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project2", "Project2.csproj", "{DFDE40AB-FA80-4690-8436-0B1BFEC8485F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DEX}") = "TestFolder", "TestFolder", "{F70F7D31-A4E9-4EB1-9711-4F0967B5F842}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFDE40AB-FA80-4690-8436-0B1BFEC8485F} = {F70F7D31-A4E9-4EB1-9711-4F0967B5F842}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3489F4CB-428E-4591-A9DF-09EA4A81238D}
+	EndGlobalSection
+EndGlobal

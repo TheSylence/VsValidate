@@ -97,5 +97,21 @@ namespace VsValidate.Tests.VisualStudio
 			// Assert
 			Assert.Single(actual);
 		}
+
+		[Fact]
+		public async Task LoadProjectsShouldIgnoreSolutionFolders()
+		{
+			// Arrange
+			var logger = Substitute.For<IOutput>();
+			var sut = new ProjectLoader(logger);
+
+			var solutionFile = new FileInfo("TestData/SolutionWithFolders.txt");
+
+			// Act
+			var actual = await sut.LoadProjectsFrom(solutionFile).ToListAsync();
+
+			// Assert
+			Assert.Equal(2, actual.Count);
+		}
 	}
 }

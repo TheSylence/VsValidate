@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestFolder", "TestFolder", "{F70F7D31-A4E9-4EB1-9711-4F0967B5F842}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionWithFolders", "SolutionWithFolders.csproj", "{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmptyFolder", "EmptyFolder", "{60726E01-0089-4ADB-8FAC-E67892EF1618}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE8EF5A1-565D-4E4F-AD3D-52830F8E062A} = {F70F7D31-A4E9-4EB1-9711-4F0967B5F842}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8446E37-21F8-4BE8-9643-BF8E470FF4CA}
+	EndGlobalSection
+EndGlobal

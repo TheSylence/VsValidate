@@ -20,6 +20,13 @@ Get-ChildItem $failingFolder -Filter *.yml | ForEach-Object {
 $succeedingFolder = "$($baseFolder)/Succeeding"
 Get-ChildItem $succeedingFolder -Filter *.yml | ForEach-Object {
     $projectFile = [System.IO.Path]::ChangeExtension($_, ".proj");
+    if(-not (Test-Path $projectFile -PathType leaf)) {
+        $projectFile = [System.IO.Path]::ChangeExtension($_, ".sln");
+
+        if(-not (Test-Path $projectFile -PathType leaf)) {
+            $projectFile = [System.IO.Path]::ChangeExtension($_, ".csproj");
+        }
+    }
 
     & dotnet $exe --config $($_) --project $($projectFile) > $null 2>&1
     if ( $LASTEXITCODE -ne 0 ) {

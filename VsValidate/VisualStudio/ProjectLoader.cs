@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using VsValidate.Utilities;
 
@@ -50,6 +51,9 @@ namespace VsValidate.VisualStudio
 			if (kvp.Length < 2)
 				return null;
 
+			if (IsIgnoredProjectType(kvp[0]))
+				return null;
+
 			var parts = kvp[1].Split(',', 3);
 			if (parts.Length < 2)
 				return null;
@@ -57,6 +61,26 @@ namespace VsValidate.VisualStudio
 			var filePath = parts[1].Trim('\"', ' ');
 
 			return Path.Combine(projectFile.Directory?.FullName ?? string.Empty, filePath);
+		}
+
+		private static bool IsIgnoredProjectType(string projectTypePart)
+		{
+			var ignoredTypes = new[]
+			{
+				Guid.Parse("2150E333-8FDC-42A3-9474-1A3956D46DE8") // Visual Studio Solution Folder
+			};
+
+			var projectTypeStart = projectTypePart.IndexOf("{", StringComparison.Ordinal);
+			var projectTypeEnd = projectTypePart.LastIndexOf("}", StringComparison.Ordinal);
+
+			if (projectTypeEnd == -1 || projectTypeStart == -1)
+				return true;
+
+			var projectId = projectTypePart[new Range(projectTypeStart + 1, projectTypeEnd)];
+			if (!Guid.TryParse(projectId, out var id))
+				return true;
+
+			return ignoredTypes.Contains(id);
 		}
 
 		private bool IsSolution(string fileContent) => fileContent.Contains("Microsoft Visual Studio Solution File");
