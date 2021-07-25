@@ -45,7 +45,7 @@ namespace VsValidate.VisualStudio
 			}
 		}
 
-		private string? ExtractProjectFilePath(string line, FileInfo projectFile)
+		private static string? ExtractProjectFilePath(string line, FileInfo projectFile)
 		{
 			var kvp = line.Split('=', 2);
 			if (kvp.Length < 2)
@@ -77,13 +77,10 @@ namespace VsValidate.VisualStudio
 				return true;
 
 			var projectId = projectTypePart[new Range(projectTypeStart + 1, projectTypeEnd)];
-			if (!Guid.TryParse(projectId, out var id))
-				return true;
-
-			return ignoredTypes.Contains(id);
+			return !Guid.TryParse(projectId, out var id) || ignoredTypes.Contains(id);
 		}
 
-		private bool IsSolution(string fileContent) => fileContent.Contains("Microsoft Visual Studio Solution File");
+		private static bool IsSolution(string fileContent) => fileContent.Contains("Microsoft Visual Studio Solution File");
 
 		private IProject? LoadProject(string content, FileInfo projectFile)
 		{

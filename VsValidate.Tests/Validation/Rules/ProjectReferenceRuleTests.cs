@@ -52,7 +52,7 @@ namespace VsValidate.Tests.Validation.Rules
 		}
 
 		[Fact]
-		public async Task ValidateShouldSucceedWhenNameMatchesButPathDoesnt()
+		public async Task ValidateShouldSucceedWhenNameMatchesButPathDoesNot()
 		{
 			// Arrange
 			var project = new ProjectBuilder()

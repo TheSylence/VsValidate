@@ -15,7 +15,7 @@ namespace VsValidate.VisualStudio
 		public ICondition? Condition { get; }
 		public ICollection<IProperty> Properties { get; }
 
-		private IEnumerable<IProperty> ReadProperties(XElement xml)
+		private IEnumerable<IProperty> ReadProperties(XContainer xml)
 		{
 			var propertyElements = xml.Descendants();
 			return propertyElements.Select(e => new Property(e, this));

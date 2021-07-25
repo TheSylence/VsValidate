@@ -50,7 +50,7 @@ namespace VsValidate.VisualStudio
 			return null;
 		}
 
-		private IEnumerable<ItemGroup> ReadItemGroups(XDocument xml)
+		private static IEnumerable<ItemGroup> ReadItemGroups(XDocument xml)
 		{
 			var itemGroupElements = xml.Root?.Descendants("ItemGroup") ?? Enumerable.Empty<XElement>();
 
@@ -83,7 +83,7 @@ namespace VsValidate.VisualStudio
 			}
 		}
 
-		private IEnumerable<IPropertyGroup> ReadPropertyGroups(XDocument xml)
+		private static IEnumerable<IPropertyGroup> ReadPropertyGroups(XDocument xml)
 		{
 			var groupElements = xml.Root?.Descendants("PropertyGroup") ?? Enumerable.Empty<XElement>();
 

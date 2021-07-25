@@ -23,13 +23,11 @@ namespace VsValidate.VisualStudio
 		public string[] PrivateAssets { get; }
 		public string Version { get; }
 
-		private string[] ReadAssets(XElement element, string assets)
+		private static string[] ReadAssets(XContainer element, string assets)
 		{
 			var child = element.Descendants(assets).FirstOrDefault();
-			if (child == null)
-				return Array.Empty<string>();
 
-			return child.Value.Split(';');
+			return child?.Value.Split(';') ?? Array.Empty<string>();
 		}
 
 		private static string ReadVersion(XElement element)
@@ -39,10 +37,7 @@ namespace VsValidate.VisualStudio
 				return attribute.Value;
 
 			var child = element.Descendants("Version").FirstOrDefault();
-			if (child != null)
-				return child.Value;
-
-			return string.Empty;
+			return child?.Value ?? string.Empty;
 		}
 	}
 }
