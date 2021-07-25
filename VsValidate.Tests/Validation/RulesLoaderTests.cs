@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NSubstitute;
 using VsValidate.Utilities;
 using VsValidate.Validation;
+using VsValidate.Validation.Definitions;
 using VsValidate.Validation.Rules;
 using Xunit;
 

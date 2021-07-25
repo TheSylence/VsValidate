@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using VsValidate.Validation.Definitions;
 using VsValidate.VisualStudio;
 
 namespace VsValidate.Validation.Rules

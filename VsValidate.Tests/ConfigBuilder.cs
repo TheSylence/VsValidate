@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VsValidate.Validation.Rules;
+using VsValidate.Validation.Definitions;
 
 namespace VsValidate.Tests
 {

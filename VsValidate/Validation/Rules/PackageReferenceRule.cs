@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using McSherry.SemanticVersioning;
 using McSherry.SemanticVersioning.Ranges;
+using VsValidate.Validation.Definitions;
 using VsValidate.VisualStudio;
 
 namespace VsValidate.Validation.Rules

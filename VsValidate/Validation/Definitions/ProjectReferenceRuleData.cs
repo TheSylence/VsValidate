@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace VsValidate.Validation.Rules
+namespace VsValidate.Validation.Definitions
 {
 	[UsedImplicitly]
 	internal class ProjectReferenceRuleData

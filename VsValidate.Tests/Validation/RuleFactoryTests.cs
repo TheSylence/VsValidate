@@ -1,6 +1,6 @@
 ﻿using System;
 using VsValidate.Validation;
-using VsValidate.Validation.Rules;
+using VsValidate.Validation.Definitions;
 using Xunit;
 
 namespace VsValidate.Tests.Validation

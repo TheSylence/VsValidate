@@ -1,4 +1,5 @@
-﻿using VsValidate.Validation.Rules;
+﻿using VsValidate.Validation.Definitions;
+using VsValidate.Validation.Rules;
 
 namespace VsValidate.Validation
 {

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using VsValidate.Validation.Definitions;
 using VsValidate.Validation.Rules;
 using Xunit;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+using VsValidate.Validation.Definitions;
 
 namespace VsValidate.Validation.Rules
 {
