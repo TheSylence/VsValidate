@@ -12,6 +12,13 @@ namespace VsValidate.Tests
 			_sdk = sdk;
 		}
 
+		public ProjectBuilder BeginChoose()
+		{
+			_currentChoose = new Choose();
+			_chooses.Add(_currentChoose);
+			return this;
+		}
+
 		public Project Build()
 		{
 			var doc = BuildXml();
@@ -24,53 +31,19 @@ namespace VsValidate.Tests
 
 			foreach (var propertyGroup in _propertyGroups)
 			{
-				var element = new XElement("PropertyGroup");
-				if (propertyGroup.Condition != null)
-					element.Add(new XAttribute("Condition", propertyGroup.Condition));
-
-				foreach (var property in propertyGroup.Properties)
-				{
-					element.Add(new XElement(property.Name, property.Value));
-				}
-
+				var element = CreatePropertyGroupXml(propertyGroup);
 				project.Add(element);
 			}
 
 			foreach (var itemGroup in _itemGroups)
 			{
-				var element = new XElement("ItemGroup");
-				if (itemGroup.Condition != null)
-					element.Add(new XAttribute("Condition", itemGroup.Condition));
+				var element = CreateItemGroupXml(itemGroup);
+				project.Add(element);
+			}
 
-				foreach (var packageReference in itemGroup.PackageReferences)
-				{
-					var xElement = new XElement("PackageReference",
-						new XAttribute("Include", packageReference.Name));
-
-					if (packageReference.Version != null)
-					{
-						if (packageReference.IsVersionNested)
-							xElement.Add(new XElement("Version", packageReference.Version));
-						else
-							xElement.Add(new XAttribute("Version", packageReference.Version));
-					}
-
-					if (!string.IsNullOrEmpty(packageReference.IncludeAssets))
-						xElement.Add(new XElement("IncludeAssets", packageReference.IncludeAssets));
-					if (!string.IsNullOrEmpty(packageReference.ExcludeAssets))
-						xElement.Add(new XElement("ExcludeAssets", packageReference.ExcludeAssets));
-					if (!string.IsNullOrEmpty(packageReference.PrivateAssets))
-						xElement.Add(new XElement("PrivateAssets", packageReference.PrivateAssets));
-
-					element.Add(xElement);
-				}
-
-				foreach (var projectReference in itemGroup.ProjectReferences)
-				{
-					element.Add(new XElement("ProjectReference",
-						new XAttribute("Include", projectReference.Path)));
-				}
-
+			foreach (var choose in _chooses)
+			{
+				var element = CreateChooseXml(choose);
 				project.Add(element);
 			}
 
@@ -78,10 +51,20 @@ namespace VsValidate.Tests
 			return doc;
 		}
 
+		public ProjectBuilder EndChoose()
+		{
+			_currentChoose = null;
+			return this;
+		}
+
 		public ProjectBuilder WithItemGroup(string? condition = null)
 		{
 			_currentItemGroup = new ItemGroup(condition);
-			_itemGroups.Add(_currentItemGroup);
+			if (_currentWhen != null)
+				_currentWhen.ItemGroups.Add(_currentItemGroup);
+			else
+				_itemGroups.Add(_currentItemGroup);
+
 			return this;
 		}
 
@@ -121,15 +104,132 @@ namespace VsValidate.Tests
 		public ProjectBuilder WithPropertyGroup(string? condition = null)
 		{
 			_currentPropertyGroup = new PropertyGroup(condition);
-			_propertyGroups.Add(_currentPropertyGroup);
+
+			if (_currentWhen != null)
+				_currentWhen.PropertyGroups.Add(_currentPropertyGroup);
+			else
+				_propertyGroups.Add(_currentPropertyGroup);
+
 			return this;
+		}
+
+		public ProjectBuilder WithWhen(string condition)
+		{
+			if (_currentChoose == null)
+				throw new InvalidOperationException("No choose created");
+
+			_currentWhen = new When(condition);
+			_currentChoose.Whens.Add(_currentWhen);
+			return this;
+		}
+
+		private static XElement CreateChooseXml(Choose choose)
+		{
+			var element = new XElement("Choose");
+			foreach (var when in choose.Whens)
+			{
+				element.Add(CreateWhenXml(when));
+			}
+
+			return element;
+		}
+
+		private static XElement CreateItemGroupXml(ItemGroup itemGroup)
+		{
+			var element = new XElement("ItemGroup");
+			if (itemGroup.Condition != null)
+				element.Add(new XAttribute("Condition", itemGroup.Condition));
+
+			foreach (var packageReference in itemGroup.PackageReferences)
+			{
+				var xElement = new XElement("PackageReference",
+					new XAttribute("Include", packageReference.Name));
+
+				if (packageReference.Version != null)
+				{
+					if (packageReference.IsVersionNested)
+						xElement.Add(new XElement("Version", packageReference.Version));
+					else
+						xElement.Add(new XAttribute("Version", packageReference.Version));
+				}
+
+				if (!string.IsNullOrEmpty(packageReference.IncludeAssets))
+					xElement.Add(new XElement("IncludeAssets", packageReference.IncludeAssets));
+				if (!string.IsNullOrEmpty(packageReference.ExcludeAssets))
+					xElement.Add(new XElement("ExcludeAssets", packageReference.ExcludeAssets));
+				if (!string.IsNullOrEmpty(packageReference.PrivateAssets))
+					xElement.Add(new XElement("PrivateAssets", packageReference.PrivateAssets));
+
+				element.Add(xElement);
+			}
+
+			foreach (var projectReference in itemGroup.ProjectReferences)
+			{
+				element.Add(new XElement("ProjectReference",
+					new XAttribute("Include", projectReference.Path)));
+			}
+
+			return element;
+		}
+
+		private static XElement CreatePropertyGroupXml(PropertyGroup propertyGroup)
+		{
+			var element = new XElement("PropertyGroup");
+			if (propertyGroup.Condition != null)
+				element.Add(new XAttribute("Condition", propertyGroup.Condition));
+
+			foreach (var property in propertyGroup.Properties)
+			{
+				element.Add(new XElement(property.Name, property.Value));
+			}
+
+			return element;
+		}
+
+		private static XElement CreateWhenXml(When when)
+		{
+			var element = new XElement("When");
+			element.Add(new XAttribute("Condition", when.Condition));
+
+			foreach (var itemGroup in when.ItemGroups)
+			{
+				element.Add(CreateItemGroupXml(itemGroup));
+			}
+
+			foreach (var propertyGroup in when.PropertyGroups)
+			{
+				element.Add(CreatePropertyGroupXml(propertyGroup));
+			}
+
+			return element;
 		}
 
 		private readonly string _sdk;
 		private readonly List<PropertyGroup> _propertyGroups = new();
 		private readonly List<ItemGroup> _itemGroups = new();
+		private readonly List<Choose> _chooses = new();
 		private PropertyGroup? _currentPropertyGroup;
 		private ItemGroup? _currentItemGroup;
+		private When? _currentWhen;
+		private Choose? _currentChoose;
+
+		private class Choose
+		{
+			public List<When> Whens { get; } = new();
+		}
+
+		private class When
+		{
+			public When(string condition)
+			{
+				Condition = condition;
+			}
+
+			public string Condition { get; }
+
+			public List<ItemGroup> ItemGroups { get; } = new();
+			public List<PropertyGroup> PropertyGroups { get; } = new();
+		}
 
 		private class PropertyGroup
 		{

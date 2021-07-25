@@ -14,21 +14,24 @@ namespace VsValidate.VisualStudio
 		public Project(XDocument xml, string fileName)
 		{
 			FileName = fileName;
-			PropertyGroups = ReadPropertyGroups(xml).ToList();
-			_itemGroups = ReadItemGroups(xml).ToList();
 
-			PackageReferences = ReadPackageReferences().ToList();
-			ProjectReferences = ReadProjectReferences().ToList();
+			var rootXml = xml.Root ?? new XElement("Project");
 
-			Sdk = xml.Root?.Attribute("Sdk")?.Value ?? string.Empty;
+			_propertyGroups = ReadPropertyGroups(rootXml).Cast<IPropertyGroup>().ToList();
+			_itemGroups = ReadItemGroups(rootXml).ToList();
+			ReadChooses(rootXml);
+
+			PackageReferences = ReadPackageReferences().Cast<IPackageReference>().ToList();
+			ProjectReferences = ReadProjectReferences().Cast<IProjectReference>().ToList();
+
+			Sdk = rootXml.Attribute("Sdk")?.Value ?? string.Empty;
 		}
 
 		public string FileName { get; }
 
 		public ICollection<IPackageReference> PackageReferences { get; }
 		public ICollection<IProjectReference> ProjectReferences { get; }
-
-		public ICollection<IPropertyGroup> PropertyGroups { get; }
+		public ICollection<IPropertyGroup> PropertyGroups => _propertyGroups;
 		public string Sdk { get; }
 
 		public IEnumerable<IProperty> FindPropertyByName(string name)
@@ -50,14 +53,42 @@ namespace VsValidate.VisualStudio
 			return null;
 		}
 
-		private static IEnumerable<ItemGroup> ReadItemGroups(XDocument xml)
+		private void ReadChooses(XElement xml)
 		{
-			var itemGroupElements = xml.Root?.Descendants("ItemGroup") ?? Enumerable.Empty<XElement>();
+			var chooses = xml.DirectDescendants("Choose");
+
+			foreach (var choose in chooses)
+			{
+				var whens = choose.DirectDescendants("When");
+				foreach (var when in whens)
+				{
+					var condition = XElementHelper.ReadCondition(when);
+
+					var itemGroups = ReadItemGroups(when);
+					foreach (var itemGroup in itemGroups)
+					{
+						itemGroup.Condition = condition;
+						_itemGroups.Add(itemGroup);
+					}
+
+					var propertyGroups = ReadPropertyGroups(when);
+					foreach (var propertyGroup in propertyGroups)
+					{
+						propertyGroup.Condition = condition;
+						_propertyGroups.Add(propertyGroup);
+					}
+				}
+			}
+		}
+
+		private static IEnumerable<ItemGroup> ReadItemGroups(XElement xml)
+		{
+			var itemGroupElements = xml.DirectDescendants("ItemGroup");
 
 			return itemGroupElements.Select(i => new ItemGroup(i));
 		}
 
-		private IEnumerable<IPackageReference> ReadPackageReferences()
+		private IEnumerable<PackageReference> ReadPackageReferences()
 		{
 			foreach (var itemGroup in _itemGroups)
 			{
@@ -70,7 +101,7 @@ namespace VsValidate.VisualStudio
 			}
 		}
 
-		private IEnumerable<IProjectReference> ReadProjectReferences()
+		private IEnumerable<ProjectReference> ReadProjectReferences()
 		{
 			foreach (var itemGroup in _itemGroups)
 			{
@@ -83,14 +114,23 @@ namespace VsValidate.VisualStudio
 			}
 		}
 
-		private static IEnumerable<IPropertyGroup> ReadPropertyGroups(XDocument xml)
+		private static IEnumerable<PropertyGroup> ReadPropertyGroups(XElement xml)
 		{
-			var groupElements = xml.Root?.Descendants("PropertyGroup") ?? Enumerable.Empty<XElement>();
+			var groupElements = xml.DirectDescendants("PropertyGroup");
 
 			return groupElements
 				.Select(e => new PropertyGroup(e));
 		}
 
+		private readonly List<IPropertyGroup> _propertyGroups;
 		private readonly List<ItemGroup> _itemGroups;
+	}
+
+	internal static class XElementExtensions
+	{
+		public static IEnumerable<XElement> DirectDescendants(this XElement xml, XName name)
+		{
+			return xml.Descendants(name).Where(d => d.Parent == xml);
+		}
 	}
 }

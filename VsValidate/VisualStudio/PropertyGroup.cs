@@ -12,7 +12,7 @@ namespace VsValidate.VisualStudio
 			Properties = ReadProperties(groupElement).ToList();
 		}
 
-		public ICondition? Condition { get; }
+		public ICondition? Condition { get; set; }
 		public ICollection<IProperty> Properties { get; }
 
 		private IEnumerable<IProperty> ReadProperties(XContainer xml)

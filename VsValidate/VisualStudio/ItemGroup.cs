@@ -11,7 +11,7 @@ namespace VsValidate.VisualStudio
 			Condition = XElementHelper.ReadCondition(element);
 		}
 
-		public ICondition? Condition { get; }
+		public ICondition? Condition { get; set; }
 
 		public IEnumerable<XElement> Descendants(XName? name = null) => _element.Descendants(name);
 
